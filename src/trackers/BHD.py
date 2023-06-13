@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# import discord
 import asyncio
 import requests
 from difflib import SequenceMatcher
@@ -215,7 +214,7 @@ class BHD():
                 for each in range(len(images[:int(meta['screens'])])):
                     web_url = images[each]['web_url']
                     img_url = images[each]['img_url']
-                    desc.write(f"[url={web_url}][img width=350]{img_url}[/img][/url]")
+                    desc.write(f"[url={web_url}][img=350x350]{img_url}[/img][/url]")
                 desc.write("[/center]")
             # desc.write(self.signature)
             desc.close()
