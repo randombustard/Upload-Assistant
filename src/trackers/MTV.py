@@ -152,7 +152,7 @@ class MTV():
                             console.print(f"[red]Upload Failed, Doesnt look like you are logged in")
                             print(response.content)
                             print(data)
-                except:
+                except Exception:
                     console.print(f"[red]It may have uploaded, go check")
                     console.print(data)
                     print(traceback.print_exc())
@@ -453,7 +453,7 @@ class MTV():
                     console.print("[red]Invalid API Key")
                 return False
             return True
-        except:
+        except Exception:
             return False
 
     async def validate_cookies(self, meta, cookiefile):
@@ -551,7 +551,7 @@ class MTV():
                     await asyncio.sleep(5)
                 else:
                     console.print(f"[red]Site Seems to be down or not responding to API")
-        except:
+        except Exception:
             console.print(f"[red]Unable to search for existing torrents on site. Most likely the site is down.")
             dupes.append("FAILED SEARCH")
             print(traceback.print_exc())

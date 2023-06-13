@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# import discord
 import asyncio
 import requests
 from difflib import SequenceMatcher
@@ -10,6 +9,7 @@ import platform
 
 from src.trackers.COMMON import COMMON
 from src.console import console
+
 
 class HUNO():
     """
@@ -52,27 +52,27 @@ class HUNO():
         open_torrent = open(f"{meta['base_dir']}/tmp/{meta['uuid']}/[HUNO]{meta['clean_name']}.torrent", 'rb')
         files = {'torrent': open_torrent}
         data = {
-            'name' : await self.get_name(meta),
-            'description' : desc,
-            'mediainfo' : mi_dump,
-            'bdinfo' : bd_dump,
-            'category_id' : cat_id,
-            'type_id' : type_id,
-            'resolution_id' : resolution_id,
-            'tmdb' : meta['tmdb'],
-            'imdb' : meta['imdb_id'].replace('tt', ''),
-            'tvdb' : meta['tvdb_id'],
-            'mal' : meta['mal_id'],
-            'igdb' : 0,
-            'anonymous' : anon,
-            'stream' : await self.is_plex_friendly(meta),
-            'sd' : meta['sd'],
-            'keywords' : meta['keywords'],
+            'name': await self.get_name(meta),
+            'description': desc,
+            'mediainfo': mi_dump,
+            'bdinfo': bd_dump,
+            'category_id': cat_id,
+            'type_id': type_id,
+            'resolution_id': resolution_id,
+            'tmdb': meta['tmdb'],
+            'imdb': meta['imdb_id'].replace('tt', ''),
+            'tvdb': meta['tvdb_id'],
+            'mal': meta['mal_id'],
+            'igdb': 0,
+            'anonymous': anon,
+            'stream': await self.is_plex_friendly(meta),
+            'sd': meta['sd'],
+            'keywords': meta['keywords'],
             'season_pack': meta.get('tv_pack', 0),
-            # 'featured' : 0,
-            # 'free' : 0,
-            # 'double_up' : 0,
-            # 'sticky' : 0,
+            # 'featured': 0,
+            # 'free': 0,
+            # 'double_up': 0,
+            # 'sticky': 0,
         }
 
         tracker_config = self.config['TRACKERS'][self.tracker]
@@ -94,7 +94,7 @@ class HUNO():
             response = requests.post(url=self.upload_url, files=files, data=data, headers=headers, params=params)
             try:
                 console.print(response.json())
-            except:
+            except Exception:
                 console.print("It may have uploaded, go check")
                 return
         else:
@@ -115,7 +115,7 @@ class HUNO():
             language = re.sub(r'\(.+\)', '', language)
 
         return f'{codec} {channels} {language}'
-    
+
     def get_basename(self, meta):
         path = next(iter(meta['filelist']), meta['path'])
         return os.path.basename(path)
@@ -253,12 +253,12 @@ class HUNO():
         console.print("[yellow]Searching for existing torrents on site...")
 
         params = {
-            'api_token' : self.config['TRACKERS']['HUNO']['api_key'].strip(),
-            'tmdbId' : meta['tmdb'],
-            'categories[]' : await self.get_cat_id(meta['category']),
-            'types[]' : await self.get_type_id(meta),
-            'resolutions[]' : await self.get_res_id(meta['resolution']),
-            'name' : ""
+            'api_token': self.config['TRACKERS']['HUNO']['api_key'].strip(),
+            'tmdbId': meta['tmdb'],
+            'categories[]': await self.get_cat_id(meta['category']),
+            'types[]': await self.get_type_id(meta),
+            'resolutions[]': await self.get_res_id(meta['resolution']),
+            'name': ""
         }
         if meta['category'] == 'TV':
             params['name'] = f"{meta.get('season', '')}{meta.get('episode', '')}"
@@ -272,7 +272,7 @@ class HUNO():
                 # difference = SequenceMatcher(None, meta['clean_name'], result).ratio()
                 # if difference >= 0.05:
                 dupes.append(result)
-        except:
+        except Exception:
             console.print('[bold red]Unable to search for existing torrents on site. Either the site is down or your API key is incorrect')
             await asyncio.sleep(5)
 

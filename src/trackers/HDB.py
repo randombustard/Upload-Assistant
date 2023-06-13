@@ -323,7 +323,7 @@ class HDB():
             for each in response['data']:
                 result = each['name']
                 dupes.append(result)
-        except:
+        except Exception:
             console.print('[bold red]Unable to search for existing torrents on site. Either the site is down or your passkey is incorrect')
             await asyncio.sleep(5)
 
@@ -354,7 +354,7 @@ class HDB():
             if r.get('status', 5) == 0:
                 return True
             return False
-        except:
+        except Exception:
             return False
     
     async def validate_cookies(self, meta):
@@ -493,7 +493,7 @@ class HDB():
                     hdb_name = response['data'][0]['name']
                     hdb_torrenthash = response['data'][0]['hash']
 
-            except:
+            except Exception:
                 console.print_exception()
         else:
             console.print("Failed to get info from HDB ID. Either the site is down or your credentials are invalid")
@@ -523,7 +523,7 @@ class HDB():
                             hdb_id = each['id']
                             console.print(f'[bold green]Matched release with HDB ID: [yellow]{hdb_id}[/yellow][/bold green]')
                             return hdb_imdb, hdb_tvdb, hdb_name, hdb_torrenthash, hdb_id
-            except:
+            except Exception:
                 console.print_exception()
         else:
             console.print("Failed to get info from HDB ID. Either the site is down or your credentials are invalid")

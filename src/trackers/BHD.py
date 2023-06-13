@@ -11,6 +11,7 @@ import platform
 from src.trackers.COMMON import COMMON
 from src.console import console
 
+
 class BHD():
     """
     Edit for Tracker:
@@ -52,7 +53,7 @@ class BHD():
         desc = open(f"{meta['base_dir']}/tmp/{meta['uuid']}/[{self.tracker}]DESCRIPTION.txt", 'r').read()
         torrent_file = f"{meta['base_dir']}/tmp/{meta['uuid']}/[{self.tracker}]{meta['clean_name']}.torrent"
         files = {
-            'mediainfo' : mi_dump,
+            'mediainfo': mi_dump,
             }
         if os.path.exists(torrent_file):
             open_torrent = open(f"{meta['base_dir']}/tmp/{meta['uuid']}/[{self.tracker}]{meta['clean_name']}.torrent", 'rb')
@@ -60,21 +61,21 @@ class BHD():
             open_torrent.close()
         
         data = {
-            'name' : bhd_name,
-            'category_id' : cat_id,
-            'type' : type_id,
+            'name': bhd_name,
+            'category_id': cat_id,
+            'type': type_id,
             'source': source_id,
-            'imdb_id' : meta['imdb_id'].replace('tt', ''),    
-            'tmdb_id' : meta['tmdb'],
-            'description' : desc,
-            'anon' : anon,
-            'sd' : meta.get('sd', 0),
-            'live' : draft 
-            # 'internal' : 0,
-            # 'featured' : 0,
-            # 'free' : 0,
-            # 'double_up' : 0,
-            # 'sticky' : 0,
+            'imdb_id': meta['imdb_id'].replace('tt', ''),    
+            'tmdb_id': meta['tmdb'],
+            'description': desc,
+            'anon': anon,
+            'sd': meta.get('sd', 0),
+            'live': draft 
+            # 'internal': 0,
+            # 'featured': 0,
+            # 'free': 0,
+            # 'double_up': 0,
+            # 'sticky': 0,
         }
         # Internal
         if self.config['TRACKERS'][self.tracker].get('internal', False) == True:
@@ -112,14 +113,13 @@ class BHD():
                     elif response['satus_message'].startswith('Invalid name value'):
                         console.print(f"[bold yellow]Submitted Name: {bhd_name}")
                 console.print(response)
-            except:
+            except Exception:
                 console.print("It may have uploaded, go check")
                 return 
         else:
             console.print(f"[cyan]Request Data:")
             console.print(data)
-        
-        
+
 
 
 
@@ -134,15 +134,15 @@ class BHD():
 
     async def get_source(self, source):
         sources = {
-            "Blu-ray" : "Blu-ray",
-            "BluRay" : "Blu-ray",
-            "HDDVD" : "HD-DVD",
-            "HD DVD" : "HD-DVD",
-            "Web" : "WEB",
-            "HDTV" : "HDTV",
-            "UHDTV" : "HDTV",
-            "NTSC" : "DVD",
-            "PAL" : "DVD"
+            "Blu-ray": "Blu-ray",
+            "BluRay": "Blu-ray",
+            "HDDVD": "HD-DVD",
+            "HD DVD": "HD-DVD",
+            "Web": "WEB",
+            "HDTV": "HDTV",
+            "UHDTV": "HDTV",
+            "NTSC": "DVD",
+            "PAL": "DVD"
         }
         
         source_id = sources.get(source)
@@ -230,9 +230,9 @@ class BHD():
         if category == 'MOVIE':
             category = "Movies"
         data = {
-            'tmdb_id' : meta['tmdb'],
-            'categories' : category,
-            'types' : await self.get_type(meta),
+            'tmdb_id': meta['tmdb'],
+            'categories': category,
+            'types': await self.get_type(meta),
         }
         # Search all releases if SD
         if meta['sd'] == 1:
@@ -255,7 +255,7 @@ class BHD():
             else:
                 console.print(f"[yellow]{response.get('status_message')}")
                 await asyncio.sleep(5) 
-        except:
+        except Exception:
             console.print('[bold red]Unable to search for existing torrents on site. Most likely the site is down.')
             await asyncio.sleep(5)
 

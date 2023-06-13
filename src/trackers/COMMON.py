@@ -168,15 +168,13 @@ class COMMON():
         compatible with requests."""
 
         cookies = {}
-        with open (cookiefile, 'r') as fp:
+        with open(cookiefile, 'r') as fp:
             for line in fp:
                 if not line.startswith(("# ", "\n", "#\n")):
                     lineFields = re.split(' |\t', line.strip())
                     lineFields = [x for x in lineFields if x != ""]
                     cookies[lineFields[5]] = lineFields[6]
         return cookies
-
-
 
     async def ptgen(self, meta, ptgen_site="", ptgen_retry=3):
         ptgen = ""
@@ -246,7 +244,7 @@ class COMMON():
     #         if "[/img]" in ptgen:
     #             ptgen = ptgen.split("[/img]")[1]
     #         ptgen = f"[img]{meta.get('imdb_info', {}).get('cover', meta.get('cover', ''))}[/img]{ptgen}"
-    #     except:
+    #     except Exception:
     #         console.print_exception()
     #         console.print("[bold red]There was an error getting the ptgen")
     #         console.print(ptgen)
