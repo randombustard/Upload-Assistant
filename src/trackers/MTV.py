@@ -29,10 +29,10 @@ class MTV():
         self.forum_link = 'https://www.morethantv.me/wiki.php?action=article&id=73'
         self.search_url = 'https://www.morethantv.me/api/torznab'
         self.banned_groups = [
-            '3LTON', 'mRS', 'CM8', 'BRrip', 'Leffe', 'aXXo', 'FRDS', 'XS', 'KiNGDOM', 'WAF', 'nHD', 
+            '3LTON', 'mRS', 'CM8', 'BRrip', 'Leffe', 'aXXo', 'FRDS', 'XS', 'KiNGDOM', 'WAF', 'nHD',
             'h65', 'CrEwSaDe', 'TM', 'ViSiON', 'x0r', 'PandaRG', 'HD2DVD', 'iPlanet', 'JIVE', 'ELiTE',
-            'nikt0', 'STUTTERSHIT', 'ION10', 'RARBG', 'FaNGDiNG0', 'YIFY', 'FUM', 'ViSION', 'NhaNc3', 
-            'nSD', 'PRODJi', 'DNL', 'DeadFish', 'HDTime', 'mHD', 'TERMiNAL', 
+            'nikt0', 'STUTTERSHIT', 'ION10', 'RARBG', 'FaNGDiNG0', 'YIFY', 'FUM', 'ViSION', 'NhaNc3',
+            'nSD', 'PRODJi', 'DNL', 'DeadFish', 'HDTime', 'mHD', 'TERMiNAL',
             '[Oj]', 'QxR', 'ZmN', 'RDN', 'mSD', 'LOAD', 'BDP', 'SANTi', 'ZKBL', ['EVO', 'WEB-DL Only']
         ]
         pass
@@ -45,12 +45,10 @@ class MTV():
 
         new_torrent = Torrent.read(f"{meta['base_dir']}/tmp/{meta['uuid']}/BASE.torrent")
 
-        
-        if not new_torrent.piece_size <= 8388608: 
+
+        if not new_torrent.piece_size <= 8388608:
             console.print("[red]Piece size is OVER 8M and wont Work on MTV, Please Generate a new torrent and replace BASE.torrent")
             return
-   
-
 
         # getting category HD Episode, HD Movies, SD Season, HD Season, SD Episode, SD Movies
         cat_id = await self.get_cat_id(meta)
@@ -63,7 +61,7 @@ class MTV():
         # getting tags
         des_tags = await self.get_tags(meta)
         # check for approved imghosts
-        approved_imghosts = ['ptpimg', 'imgbox', 'empornium']
+        approved_imghosts = ['ptpimg', 'imgbox', 'empornium', 'ibb']
         if not all(any(x in image['raw_url'] for x in approved_imghosts) for image in meta['image_list']):
             console.print("[red]Unsupported image host detected, please use one of the approved imagehosts")
             return
@@ -71,10 +69,10 @@ class MTV():
         await self.edit_desc(meta)
         # getting groups des so things like imdb link, tmdb link etc..
         group_desc = await self.edit_group_desc(meta)
-        #poster is optional so no longer getting it as its a pain with having to use supported image provider
+        # poster is optional so no longer getting it as its a pain with having to use supported image provider
         # poster = await self.get_poster(meta)
-        
-        #edit name to match MTV standards
+
+        # edit name to match MTV standards
         mtv_name = await self.edit_name(meta)
 
         # anon
@@ -190,7 +188,7 @@ class MTV():
 
     async def edit_group_desc(self, meta):
         description = ""
-        if meta['imdb_id'] not in ("0", "", None): 
+        if meta['imdb_id'] not in ("0", "", None):
             description += f"https://www.imdb.com/title/tt{meta['imdb_id']}"
         if meta['tmdb'] != 0:
             description += f"\nhttps://www.themoviedb.org/{str(meta['category'].lower())}/{str(meta['tmdb'])}"
@@ -227,7 +225,7 @@ class MTV():
         mtv_name = re.sub("[^0-9a-zA-ZÀ-ÿ. &+'\-\[\]]+", "", mtv_name)
         mtv_name = mtv_name.replace(' ', '.').replace('..', '.')
         return mtv_name
-    
+
 
     # Not needed as its optional
     # async def get_poster(self, meta):
@@ -327,7 +325,6 @@ class MTV():
                 }.get(meta['type'], '0')
         return type_id
 
-
     async def get_origin_id(self, meta):
         if meta['personalrelease']:
             return '4'
@@ -352,13 +349,12 @@ class MTV():
             tags.append('hd')
         # Streaming Service
         if str(meta['service_longname']) != "":
-            tags.append(f"{meta['service_longname'].lower().replace(' ', '.')}.source") 
+            tags.append(f"{meta['service_longname'].lower().replace(' ', '.')}.source")
         # Release Type/Source
         for each in ['remux', 'WEB.DL', 'WEBRip', 'HDTV', 'BluRay', 'DVD', 'HDDVD']:
             if (each.lower().replace('.', '') in meta['type'].lower()) or (each.lower().replace('-', '') in meta['source']):
                 tags.append(each)
-            
-            
+
         # series tags
         if meta['category'] == "TV":
             if meta.get('tv_pack', 0) == 0:
@@ -373,15 +369,13 @@ class MTV():
                     tags.append('sd.season')
                 else:
                     tags.append('hd.season')
-        
+
         # movie tags
         if meta['category'] == 'MOVIE':
             if meta['sd'] == 1:
                 tags.append('sd.movie')
             else:
                 tags.append('hd.movie')
-        
-
 
         # Audio tags
         audio_tag = ""
@@ -488,11 +482,12 @@ class MTV():
         with requests.Session() as session:
             url = 'https://www.morethantv.me/login'
             payload = {
-                'username' : self.config['TRACKERS'][self.tracker].get('username'),
-                'password' : self.config['TRACKERS'][self.tracker].get('password'),
-                'keeploggedin' : 1,
-                'cinfo' : '1920|1080|24|0',
-                'submit' : 'login'
+                'username': self.config['TRACKERS'][self.tracker].get('username'),
+                'password': self.config['TRACKERS'][self.tracker].get('password'),
+                'keeploggedin': 1,
+                'cinfo': '1920|1080|24|0',
+                'submit': 'login',
+                'iplocked': 1,
                 # 'ssl' : 'yes'
             }
             res = session.get(url="https://www.morethantv.me/login")

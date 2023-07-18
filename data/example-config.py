@@ -34,7 +34,7 @@ config = {
 
     "TRACKERS": {
         # Which trackers do you want to upload to?
-        "default_trackers": "BHD, TL, AITHER, PTP, NBL, MTV",
+        "default_trackers": "BHD, TL, PTP, NBL, MTV, AITHER",
 
         "BLU": {
             "useAPI": False,  # Set to True if using BLU
